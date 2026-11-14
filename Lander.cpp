@@ -74,3 +74,10 @@
 
             
 
+                // ===== STAGE 1: ENGINE ON =====
+
+            double currentThrust = maxThrust * throttle;
+            double acceleration = (currentThrust / mass) - 1.62; 
+            velocity += acceleration * engineTime; 
+            altitude += velocity * engineTime; 
+
