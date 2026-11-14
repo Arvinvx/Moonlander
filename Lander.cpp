@@ -131,3 +131,11 @@
 
             return true;
         }
+
+    void Lander::setThrottle(double newThrottle){
+
+        if (fuel <= 0) {
+            throttle = 0.0;
+        }
+
+        else
