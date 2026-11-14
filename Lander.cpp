@@ -168,3 +168,7 @@
     double Lander::getFuel() {
         return fuel;
     }
+
+    LanderStatus Lander::getStatus() const {
+        return status;
+    }

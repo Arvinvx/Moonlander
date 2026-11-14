@@ -36,6 +36,8 @@ class Lander {
 
     double getFuel();
 
+    LanderStatus getStatus() const;
+
     void setThrottle(double newThrottle);
 
     
