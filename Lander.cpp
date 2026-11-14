@@ -22,3 +22,13 @@
             std::cout << "Warning: Throttle must be between 0.0 and 1.0. Setting throttle to 0.0." << std::endl;
             throttle = 0.0;
         }
+
+        if (mass <= 0) {
+            std::cout << "Warning: Mass must be positive. Setting mass to 1000.0." << std::endl;
+            mass = 1000.0;
+        }
+
+        if (maxThrust <= 0) {
+            std::cout << "Warning: Max thrust must be positive. Setting max thrust to 1000.0." << std::endl;
+            maxThrust = 1000.0;
+        }
