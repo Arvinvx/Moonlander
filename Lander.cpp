@@ -161,3 +161,10 @@
         return velocity;
     }
 
+    double Lander::getThrottle() {
+        return throttle;
+    }
+
+    double Lander::getFuel() {
+        return fuel;
+    }
