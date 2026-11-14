@@ -67,3 +67,10 @@
             fuel = 0; 
             throttle = 0; 
 
+        }else if (fuel < fuelUsed){ // if we don't have enough fuel to burn for the entire time step, we need to calculate how long the engine can run before running out of fuel
+            
+            double engineTime = fuel / (burnRate * throttle); // How long the engine runs. for the fuel we have 
+            double remainingTime = dt - engineTime; // How much time is left after the engine runs out of fuel
+
+            
+
