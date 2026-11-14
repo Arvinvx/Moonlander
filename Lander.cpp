@@ -42,3 +42,8 @@
             std::cout << "Warning: Fuel cannot be negative. Setting fuel to 0." << std::endl;
             fuel = 0;
         }
+        
+    }
+
+    
+    bool Lander::move(double dt){
