@@ -27,3 +27,13 @@ class Lander {
     Lander(double h , double v, double m, double maxThrust, double t, double f, double burnRate);
 
     bool move(double dt);
+    
+    double getaltitude() ;
+    
+    double getVelocity();
+
+    double getThrottle();
+
+    double getFuel();
+
+    void setThrottle(double newThrottle);
