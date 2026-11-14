@@ -121,3 +121,13 @@
                 status = CRASHED;
             }
             
+            
+            else { 
+                std::cout << "Safe landing! Velocity was: " << velocity << std::endl;
+                velocity = 0; // Stop moving
+                status = LANDED;
+            }
+            }
+
+            return true;
+        }
