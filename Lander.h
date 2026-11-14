@@ -5,3 +5,6 @@ enum LanderStatus {
   LANDED ,
   CRASHED
 }; 
+
+
+class Lander {       
