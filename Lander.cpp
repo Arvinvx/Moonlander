@@ -81,3 +81,15 @@
             velocity += acceleration * engineTime; 
             altitude += velocity * engineTime; 
 
+                // ===== STAGE 2: ENGINE OFF =====
+
+
+            acceleration = - 1.62; // Since we are out of fuel, the only acceleration is due to gravity
+            velocity += acceleration * remainingTime; // Gravity and engine changes HOW FAST
+            altitude += velocity * remainingTime; // Position changes HOW HIGH
+            fuel = 0; 
+            throttle = 0; 
+            std::cout << "Out of fuel!" << std::endl;
+
+        
+        
