@@ -152,3 +152,12 @@
             throttle = newThrottle;
         }   
     }
+
+    double Lander::getaltitude()  {
+        return altitude;
+    }
+
+    double Lander::getVelocity() {
+        return velocity;
+    }
+
