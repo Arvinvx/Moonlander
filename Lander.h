@@ -19,3 +19,9 @@ class Lander {
     double burnRate;
 
     LanderStatus status;
+
+
+
+  public:
+
+    Lander(double h , double v, double m, double maxThrust, double t, double f, double burnRate);
