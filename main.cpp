@@ -8,3 +8,17 @@ int main(){
     while (rocket.getaltitude() > 0) {
 
         if (rocket.move(1.0) == true) {
+
+            counter++;
+
+            std::cout << "counter:" << counter << std::endl;
+            std::cout << "Altitude:" << rocket.getaltitude() << std::endl;
+            std::cout << "throttle:" << rocket.getThrottle() << std::endl;
+
+
+        }else{
+
+            std::cout << "Simulation stopped: Movement failed." << std::endl;
+            break;
+        
+        }
