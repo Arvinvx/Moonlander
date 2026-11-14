@@ -8,3 +8,12 @@ enum LanderStatus {
 
 
 class Lander {       
+
+  private:           
+    double altitude;        
+    double velocity;  
+    double mass;
+    double maxThrust;
+    double throttle; 
+    double fuel;
+    double burnRate;
