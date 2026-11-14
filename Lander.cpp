@@ -110,3 +110,14 @@
         
         }
 
+
+
+        if (altitude <= 0) { // Question 1: Are we on the ground?
+            altitude = 0; // Stop at the surface
+            
+            if (velocity < -5){ // If the lander is moving too fast more than -5 m/s, it crashes (- here means downwards) // Question 2: Did we hit too fast?
+                std::cout << "CRASH! Velocity was: " << velocity << std::endl;
+                velocity = 0; // Stop moving
+                status = CRASHED;
+            }
+            
