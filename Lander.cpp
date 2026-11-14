@@ -57,3 +57,13 @@
             return false;
         }
         
+        double fuelUsed = burnRate * throttle * dt;
+        
+        if (fuel <= 0) {
+
+            double acceleration = - 1.62; // Since we are out of fuel, the only acceleration is due to gravity
+            velocity += acceleration * dt; // Gravity and engine changes HOW FAST
+            altitude += velocity * dt; // Position changes HOW HIGH
+            fuel = 0; 
+            throttle = 0; 
+
