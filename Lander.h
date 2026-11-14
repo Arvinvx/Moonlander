@@ -37,3 +37,6 @@ class Lander {
     double getFuel();
 
     void setThrottle(double newThrottle);
+
+    
+};
