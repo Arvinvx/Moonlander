@@ -17,3 +17,5 @@ class Lander {
     double throttle; 
     double fuel;
     double burnRate;
+
+    LanderStatus status;
