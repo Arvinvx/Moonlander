@@ -93,3 +93,20 @@
 
         
         
+        }else{ // if we have enough fuel to burn for the entire time step, we can calculate the acceleration and update the velocity and altitude normally
+
+            double currentThrust = maxThrust * throttle;
+            double acceleration = (currentThrust / mass) - 1.62; 
+            
+            velocity += acceleration * dt; // Gravity and engine changes HOW FAST
+            altitude += velocity * dt; // Position changes HOW HIGH
+            fuel -= fuelUsed; // Fuel decreases based on burn rate and throttle
+
+            if (fuel <= 0) {
+                fuel = 0;
+                throttle = 0;
+                std::cout << "Out of fuel!" << std::endl;
+            }
+        
+        }
+
