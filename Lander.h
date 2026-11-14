@@ -25,3 +25,5 @@ class Lander {
   public:
 
     Lander(double h , double v, double m, double maxThrust, double t, double f, double burnRate);
+
+    bool move(double dt);
