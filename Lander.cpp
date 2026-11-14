@@ -47,3 +47,13 @@
 
     
     bool Lander::move(double dt){
+
+        if (dt <= 0) {
+            std::cout << "Warning: Time step must be positive. No movement will occur." << std::endl;
+            return false; 
+        }
+
+        if (status == LANDED || status == CRASHED) {
+            return false;
+        }
+        
