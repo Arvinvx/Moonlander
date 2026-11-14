@@ -32,3 +32,13 @@
             std::cout << "Warning: Max thrust must be positive. Setting max thrust to 1000.0." << std::endl;
             maxThrust = 1000.0;
         }
+        
+        if (burnRate <= 0){
+            std::cout << "Warning: Burn rate must be positive. Setting burn rate to 1.0." << std::endl;
+            burnRate = 1.0;
+        }
+
+        if (fuel < 0) {
+            std::cout << "Warning: Fuel cannot be negative. Setting fuel to 0." << std::endl;
+            fuel = 0;
+        }
