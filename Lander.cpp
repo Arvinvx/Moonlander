@@ -139,3 +139,16 @@
         }
 
         else
+
+        if (newThrottle > 1.0) {
+            throttle = 1.0;
+        }
+
+        else if (newThrottle < 0.0) {
+            throttle = 0.0;
+        }
+
+        else {
+            throttle = newThrottle;
+        }   
+    }
