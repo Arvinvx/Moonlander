@@ -2,7 +2,6 @@
 #include <iostream>
 
 
-
     Lander::Lander(double h , double v, double m, double mt, double t, double f, double br) {
         altitude = h;
         velocity = v;

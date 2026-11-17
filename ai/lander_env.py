@@ -32,6 +32,7 @@ class LanderEnv(gym.Env):
             self.getVelocity,
             self.getFuel
         ], dtype=np.float32)
+        
 
         return observation, {}
 
@@ -40,6 +41,7 @@ class LanderEnv(gym.Env):
         self.throttle = action.item()  # here we ask ai to give us a value between 0 and 1 (thrust).
         self.rocket.set_throttle(self.throttle)
         self.fuel_before = self.rocket.get_fuel()
+        self.previous_altitude = self.rocket.get_altitude()
         self.rocket.move(1.0)
         self.rocket_status = self.rocket.get_status()
         self.new_altitude = self.rocket.get_altitude()
@@ -55,7 +57,10 @@ class LanderEnv(gym.Env):
         self.timed_out,
         self.fuel_before,
         self.new_fuel,
-        1.0
+        1.0,
+        self.new_velocity,
+        self.new_altitude,
+        self.previous_altitude
     )
 
         observation = np.array([ # So why create observation again? Because PPO expects those three numbers together in one NumPy array, not as three separate variables.

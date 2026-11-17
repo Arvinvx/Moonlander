@@ -4,7 +4,7 @@ import shutil
 dll_dir = os.path.dirname(shutil.which("g++"))
 handle = os.add_dll_directory(dll_dir)
 
-from lander_env import LanderEnv
+from lander_env import LanderEnv 
 from stable_baselines3 import PPO
 from stable_baselines3.common.env_checker import check_env
 
@@ -14,11 +14,14 @@ env = LanderEnv()
 check_env(env)
 print("ENVIRONMENT CHECK PASSED")
 
-# Create the PPO neural network
+# Create a NEW PPO model from scratch
 model = PPO("MlpPolicy", env, verbose=1, device="cpu")
+  
+# Train with our new reward system
+model.learn(total_timesteps=200_000)
 
-# Actually train the AI
-model.learn(total_timesteps=100_000)
+# Save separately from the previous models
+model.save("ai/ppo_lander_v1_reward_v2.zip")
 
-# Save the trained model
-model.save("ppo_lander_v1")
+print("TRAINING COMPLETE")
+env.close()

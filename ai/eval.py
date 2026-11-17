@@ -11,15 +11,16 @@ from stable_baselines3 import PPO
 
 # Load our trained AI
 env = LanderEnv()
-model = PPO.load("ppo_lander_v1.zip", device="cpu")
+model = PPO.load("ai/ppo_lander_v1_reward_v3.zip", device="cpu")
 
 successes = 0
 crashes = 0
 timeouts = 0
 total_rewards = []
 
-# Test 100 landing attempts
-for i in range(100):
+
+# Test 300 landing attempts
+for i in range(300):
     observation, info = env.reset()
     done = False
     episode_reward = 0.0
@@ -50,11 +51,11 @@ for i in range(100):
 
 # Final research results
 print("\n===== PPO V1 RESULTS =====")
-print(f"Total attempts: 100")
+print(f"Total attempts: 300")
 print(f"Successful landings: {successes}")
 print(f"Crashes: {crashes}")
 print(f"Timeouts: {timeouts}")
-print(f"Success rate: {successes}%")
-print(f"Average reward: {sum(total_rewards)/100:.2f}")
+print(f"Success rate: {successes/300*100:.2f}%")
+print(f"Average reward: {sum(total_rewards)/300:.2f}")
 
 env.close()
