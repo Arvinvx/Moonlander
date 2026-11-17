@@ -17,7 +17,6 @@ class Lander {
     double throttle; 
     double fuel;
     double burnRate;
-
     LanderStatus status;
 
 
@@ -35,6 +34,8 @@ class Lander {
     double getThrottle();
 
     double getFuel();
+
+    LanderStatus getStatus();
 
     void setThrottle(double newThrottle);
 

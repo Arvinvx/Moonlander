@@ -165,6 +165,10 @@
         return throttle;
     }
 
+    LanderStatus Lander::getStatus() {
+    return status;
+}
+
     double Lander::getFuel() {
         return fuel;
     }
