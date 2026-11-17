@@ -8,8 +8,10 @@ def get_reward(landed, crashed, timed_out, fuel_before, fuel_after, dt, velocity
 
     reward -= dt * 0.02 # each second of flight costs 0.02 points
 
-    if crashed : 
-        reward -= 100.0 # crashing costs 100 points
+    if crashed:
+        reward -= 100.0 + abs(velocity) * 2.0 # Crashing costs 100 points.
+        # Abs make the velocitry positive so that the faster u crash the more points u lose. and that 100 is just the usual 100 for crashing.
+        # The 2.0 is the multiplier for the speed of the crash so the model gives more importance to crashing at high speeds.
 
     if timed_out:
         reward -= 100.0 # timing out costs 100 points
