@@ -12,12 +12,12 @@ from stable_baselines3 import PPO
 
 # TEST = 1 -> PPO picks the action (shows what the policy outputs)
 # TEST = 2 -> force full throttle (checks whether the C++ engine brakes)
-TEST = 2
-N_EPISODES = 1
+TEST = 1
+N_EPISODES = 100
 
 # Load our trained AI
 env = LanderEnv()
-model = PPO.load("ai/ppo_lander_v1_reward_v3.zip", device="cpu")
+model = PPO.load("ai/ppo_lander_v1_reward_v5.zip", device="cpu")
 
 successes = 0
 crashes = 0
