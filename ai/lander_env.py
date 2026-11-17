@@ -22,7 +22,7 @@ class LanderEnv(gym.Env):
 
     def reset(self, seed=None, options=None):
         super().reset(seed=seed) 
-        self.rocket = lander_cpp.Lander(1000, -50, 1000, 3000, 0.2, 500, 2)
+        self.rocket = lander_cpp.Lander(1000, -10, 1000, 3000, 0.2, 500, 2)        
         self.counter = 0
         self.getaltitude = self.rocket.get_altitude()
         self.getVelocity = self.rocket.get_velocity()
@@ -81,3 +81,6 @@ class LanderEnv(gym.Env):
 # action_space: The rocket has one control, throttle, between 0 and 1.
 
 # observation_space: The rocket has three measurements: altitude, velocity, and fuel.
+
+
+# You don't need to specify where action comes from. Whoever calls step() supplies that argument. During training, that's Stable-Baselines3's PPO algorithm.
