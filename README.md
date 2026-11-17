@@ -19,7 +19,7 @@ python ai/train.py
 python ai/eval.py
 ```
 
-Training saves a model under `ai/`. Evaluation currently loads `ai/ppo_lander_v1_reward_v3.zip` and runs 300 attempts. The checked-in model archives are snapshots from different experiments, not a final or guaranteed-performing agent.
+Training saves the current PPO checkpoint as `model/ppo_lander_v1_reward_v5.zip`, and evaluation loads that checkpoint for 100 attempts. The model is an experimental snapshot, not a final or guaranteed-performing agent.
 
 ## Current state
 

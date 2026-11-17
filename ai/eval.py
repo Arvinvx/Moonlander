@@ -17,7 +17,7 @@ N_EPISODES = 100
 
 # Load our trained AI
 env = LanderEnv()
-model = PPO.load("ai/ppo_lander_v1_reward_v5.zip", device="cpu")
+model = PPO.load("model/ppo_lander_v1_reward_v5.zip", device="cpu")
 
 successes = 0
 crashes = 0
