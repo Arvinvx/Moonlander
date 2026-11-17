@@ -15,7 +15,7 @@ class LanderEnv(gym.Env):
         )
 
         self.observation_space = gym.spaces.Box(
-            low=np.array([0, -np.inf, 0], dtype=np.float32),
+            low=np.array([0, -10, 0], dtype=np.float32), # because after normalization, velocity values become smaller. so its -10 not infinity.
             high=np.array([np.inf, np.inf, np.inf], dtype=np.float32),
             dtype=np.float32
         )
@@ -28,9 +28,9 @@ class LanderEnv(gym.Env):
         self.getVelocity = self.rocket.get_velocity()
         self.getFuel = self.rocket.get_fuel()
         observation = np.array([
-            self.getaltitude,
-            self.getVelocity,
-            self.getFuel
+            self.getaltitude/1000.0,
+            self.getVelocity/100.0,
+            self.getFuel/500.0
         ], dtype=np.float32)
         
 
@@ -63,10 +63,10 @@ class LanderEnv(gym.Env):
         self.previous_altitude
     )
 
-        observation = np.array([ # So why create observation again? Because PPO expects those three numbers together in one NumPy array, not as three separate variables.
-            self.new_altitude,
-            self.new_velocity,
-            self.new_fuel
+        observation = np.array([ # normalize the values to make it easier for the AI to learn.
+            self.new_altitude / 1000.0,
+            self.new_velocity / 100.0,
+            self.new_fuel / 500.0
         ], dtype=np.float32)
 
         terminated = self.landed or self.crashed
