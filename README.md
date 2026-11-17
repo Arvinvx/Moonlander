@@ -1,34 +1,96 @@
 # Lunar Moon Landing
 
-This is a work in progress: a small lunar-lander simulation and a reinforcement-learning agent that is learning how to land it. The project is still being experimented on, so the reward rules, model files, and training setup may change.
+A lunar lander simulation with a reinforcement learning agent that learns to control the engine throttle.
+
+I'm building this project to learn how C++ physics, Python, and reinforcement learning work together. It is still in development, and I am experimenting with the reward function and training settings.
 
 ## How it works
 
-The lander physics are written in C++ in `cpp/`. `cpp/bindings.cpp` exposes the `Lander` class to Python as `lander_cpp`. The Python environment in `ai/lander_env.py` wraps that simulation in a Gymnasium interface with three observations: altitude, vertical velocity, and fuel. The agent controls engine throttle from 0 to 1.
+The simulator models vertical movement under lunar gravity. The agent reads three values: altitude, vertical velocity, and remaining fuel. It then chooses a throttle value between `0` and `1`.
 
-Training uses PPO from Stable-Baselines3. `ai/reward.py` contains the current reward rules, which encourage a safe landing and penalize crashes, excessive descent speed, fuel use, and long flights. These rules are still being tuned.
+- **C++** handles movement, fuel use, and landing status.
+- **pybind11** makes the C++ simulator available in Python.
+- **Gymnasium** connects the simulator to the training algorithm.
+- **PPO**, from Stable-Baselines3, learns the throttle policy using rewards.
 
-## Project layout
+The reward function is in `ai/reward.py`.
 
-- `ai/` contains the Gymnasium environment, reward function, and PPO training/evaluation scripts.
-- `cpp/` contains the lander physics and the pybind11 interface used by Python.
-- `model/` contains the current PPO checkpoint used by `ai/eval.py`.
-- `experiments/legacy_mlp_agent.py` is an early standalone MLP experiment; it is separate from the PPO model.
-- `assets/` contains project imagery.
+## Project structure
 
-## Running the experiments
+```text
+.
+├── ai/
+│   ├── train.py                # PPO training
+│   ├── eval.py                 # Model evaluation
+│   ├── lander_env.py           # Gymnasium environment
+│   ├── reward.py               # Reward rules
+│   └── lander_cpp.pyd          # Compiled Windows extension
+├── cpp/
+│   ├── Lander.h                # Simulator interface
+│   ├── Lander.cpp              # Physics and landing logic
+│   ├── bindings.cpp            # Python bindings
+│   └── main.cpp                # Standalone C++ example
+├── model/
+│   └── ppo_lander_v1_reward_v5.zip
+├── experiments/
+│   └── legacy_mlp_agent.py     # Early MLP experiment
+├── assets/
+│   └── image.png
+├── .gitignore
+└── README.md
+```
 
-The Python scripts expect the project dependencies to be installed, including Gymnasium, NumPy, Stable-Baselines3, and the `lander_cpp` extension. The extension is built from the C++ sources with pybind11; a compatible C++ compiler must also be available. On Windows, the scripts currently look for `g++` on `PATH` to locate its runtime DLLs.
+The script in `experiments/` is an older experiment. It may need changes to work with the current code.
 
-From the repository root:
+## Setup
+
+The current scripts use Windows DLL loading and expect `g++` on `PATH`.
+
+Install the Python dependencies:
 
 ```bash
-python ai/train.py
+python -m pip install numpy gymnasium stable-baselines3 pybind11
+```
+
+You also need the `lander_cpp` extension. The included `ai/lander_cpp.pyd` must match your Python version, system architecture, and compiler runtime. If it does not, you will need to rebuild it from the C++ sources. Build instructions are still being documented.
+
+Run the following commands from the repository root.
+
+## Evaluate the model
+
+```bash
 python ai/eval.py
 ```
 
-Training saves the current PPO checkpoint as `model/ppo_lander_v1_reward_v5.zip`, and evaluation loads that checkpoint for 100 attempts. The checkpoint is included so the evaluation script has a model to load. It is an experimental snapshot, not a final or guaranteed-performing agent.
+This loads `model/ppo_lander_v1_reward_v5.zip` and runs 100 episodes. It reports landings, crashes, timeouts, success rate, and average reward.
+
+Actions are sampled from the policy, so results can vary. All episodes use the same starting conditions.
+
+## Train a model
+
+```bash
+python ai/train.py
+```
+
+The script trains a new PPO agent with `MlpPolicy` on the CPU for about 200,000 timesteps. It saves to `model/ppo_lander_v1_reward_v5.zip`, replacing the existing checkpoint.
+
+## Environment
+
+| Setting | Current value |
+|---|---|
+| Starting altitude | 1,000 m |
+| Starting vertical velocity | -10 m/s |
+| Starting fuel | 500 units |
+| Throttle range | 0 to 1 |
+| Time per step | 1 second |
+| Episode limit | 300 steps |
+
+Negative velocity means downward movement. Ground contact below -5 m/s is counted as a crash.
+
+Before reaching the agent, altitude is divided by 1,000, velocity by 100, and fuel by 500. This keeps the input values closer in scale.
 
 ## Current state
 
-This repository is an experiment in progress. Training settings, reward shaping, model naming, and the native-extension build steps still need cleanup. Results should be treated as exploratory until they have been reproduced and compared consistently.
+The v5 checkpoint is experimental. A confirmed success rate has not been recorded yet.
+
+The simulator uses constant gravity and mass. It currently supports vertical movement only. The next steps are improving the reward function, recording evaluation results, and testing different starting conditions.
