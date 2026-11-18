@@ -4,9 +4,13 @@ A lunar lander simulation with a reinforcement learning agent that learns to con
 
 I'm building this project to learn how C++ physics, Python, and reinforcement learning work together. It is still in development, and I am experimenting with the reward function and training settings.
 
+**Lander V2.1 is the best model currently available for this project and the recommended version to use.** Lander V1 is old, is no longer recommended, and has been removed from the current files.
+
 ## How it works
 
 The simulator models vertical movement under lunar gravity. The agent reads three values: altitude, vertical velocity, and remaining fuel. It then chooses a throttle value between `0` and `1`.
+
+Each episode starts with a random altitude, descent speed, mass, and maximum thrust. During flight, noise is added to the throttle and sensor readings so the agent has to handle changing conditions.
 
 - **C++** handles movement, fuel use, and landing status.
 - **pybind11** makes the C++ simulator available in Python.
@@ -31,7 +35,8 @@ The reward function is in `ai/reward.py`.
 │   ├── bindings.cpp            # Python bindings
 │   └── main.cpp                # Standalone C++ example
 ├── model/
-│   └── ppo_lander_v1_reward_v5.zip
+│   ├── lander-v2.zip           # Earlier checkpoint used for further training
+│   └── lander-v2.1             # Recommended checkpoint (ZIP archive without .zip)
 ├── experiments/
 │   └── legacy_mlp_agent.py     # Early MLP experiment
 ├── assets/
@@ -56,17 +61,29 @@ You also need the `lander_cpp` extension. The included `ai/lander_cpp.pyd` must 
 
 Run the following commands from the repository root. The scripts use relative paths for checkpoints.
 
+## Model versions
+
+| Version | Current use |
+|---|---|
+| Lander V2.1 | Best available model for this project, selected by the project author. Used by the evaluation script. |
+| Lander V2 | Earlier checkpoint. Used as the starting point for V2.1 training. |
+| Lander V1 | Old model, no longer recommended. Its `ppo_lander_v1_reward_v5.zip` checkpoint has been removed from the current files. |
+
+The V2.1 file is named `model/lander-v2.1`. It contains a Stable-Baselines3 ZIP checkpoint even though its filename does not end in `.zip`. The scripts use this exact path.
+
 ## Evaluate the model
 
 ```bash
 python ai/eval.py
 ```
 
-The repository's evaluation script loads `model/ppo_lander_v1_reward_v5.zip` and runs 100 episodes on the CPU. It prints the throttle at each step, then reports landings, crashes, timeouts, success rate, and average reward.
+The evaluation script loads `model/lander-v2.1` and runs 100 episodes on the CPU. It prints the throttle at each step, then reports landings, crashes, timeouts, success rate, and average reward.
 
-The checkpoint path is set in the script's `PPO.load(...)` call. To evaluate a later checkpoint, set this path to its location. For example, use `model/lander-v2.zip` if you have placed a v2 checkpoint in `model/`.
+The checkpoint path is set in the script's `PPO.load(...)` call. To evaluate V2 instead, set this path to `model/lander-v2.zip`.
 
-With `TEST = 1`, actions are sampled from the policy using `deterministic=False`. Each episode also has random starting conditions and noise, so results can vary between runs. The script does not set a fixed seed.
+With `TEST = 1`, the agent chooses actions using `deterministic=True`, so it does not sample random policy actions. Starting conditions, throttle noise, and sensor noise are still random, so results can vary between runs. The script does not set a fixed seed.
+
+The final report still has the old heading `PPO V1 RESULTS`. The loaded checkpoint is V2.1; the heading does not identify the model version.
 
 `TEST = 2` replaces the policy action with full throttle to check engine braking. Environment noise still applies. This mode checks the simulator and should not be reported as the agent's performance.
 
@@ -76,9 +93,9 @@ With `TEST = 1`, actions are sampled from the policy using `deterministic=False`
 python ai/train.py
 ```
 
-The script first calls Gymnasium's environment checker, then loads `model/ppo_lander_v1_reward_v5.zip` and continues PPO training on the CPU for about 200,000 more timesteps. It uses the policy and settings stored in that checkpoint.
+The script first calls Gymnasium's environment checker, then loads `model/lander-v2.zip` and continues PPO training on the CPU for about 100,000 more timesteps. It uses the policy and settings stored in that checkpoint.
 
-The output is `lander-v2.zip` in the repository root. Running training again uses the same v5 input and replaces that output file. It does not automatically resume from v2. To keep the output with the other checkpoints, move it into `model/` after training and use that path for evaluation.
+The output is `model/lander-v2.1`, which replaces the existing V2.1 checkpoint. Make a copy first if you want to keep the current model. Running training again starts from V2 each time; it does not automatically continue from V2.1.
 
 ## Environment
 
@@ -118,7 +135,7 @@ These terms are added together each step. The intended crash penalty includes `-
 
 ## Current state
 
-This is still a learning project. The included v5 checkpoint is experimental, and no confirmed success rate is published here. Results need to be measured with the checkpoint and environment settings used for each run.
+This is still a learning project. V2.1 is the current recommended model, but the project remains experimental. No measured success rate or comparison between versions is published here yet. Record the checkpoint, environment settings, and evaluation results when comparing runs.
 
 The simulator currently supports vertical movement only. Gravity is constant, and mass does not decrease as fuel is burned.
 

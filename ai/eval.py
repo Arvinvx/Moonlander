@@ -17,7 +17,7 @@ N_EPISODES = 100
 
 # Load our trained AI
 env = LanderEnv()
-model = PPO.load("model/ppo_lander_v1_reward_v5.zip", device="cpu")
+model = PPO.load("model/lander-v2.1", device="cpu")
 
 successes = 0
 crashes = 0
@@ -31,7 +31,7 @@ for i in range(N_EPISODES):
     episode_reward = 0.0
 
     while not done:
-        action, _ = model.predict(observation, deterministic=False)
+        action, _ = model.predict(observation, deterministic=True)
         print("AI throttle:", action.item())
 
         if TEST == 2:

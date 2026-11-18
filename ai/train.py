@@ -15,11 +15,11 @@ check_env(env)
 print("ENVIRONMENT CHECK PASSED")
 
 
-model = PPO.load("model/ppo_lander_v1_reward_v5", env=env, device="cpu")
+model = PPO.load("model/lander-v2", env=env, device="cpu")
 
-model.learn(total_timesteps=200_000)
+model.learn(total_timesteps=100_000)
 
-model.save("lander-v2")
+model.save("model/lander-v2.1")
 
 print("TRAINING COMPLETE")
 env.close()
