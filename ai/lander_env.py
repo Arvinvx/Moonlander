@@ -7,14 +7,14 @@ class LanderEnv(gym.Env):
     def __init__(self):
         super().__init__()
 
-        self.action_space = gym.spaces.Box(
+        self.action_space = gym.spaces.Box( # What ai can return to us. The ai can return a value between 0 and 1 (throttle).
             low=0.0,
             high=1.0,
             shape=(1,),
             dtype=np.float32
         )
 
-        self.observation_space = gym.spaces.Box(
+        self.observation_space = gym.spaces.Box( # What ai can see. The ai can see the altitude, velocity, and fuel of the rocket.
             low=np.array([0, -10, 0], dtype=np.float32), # because after normalization, velocity values become smaller. so its -10 not infinity.
             high=np.array([np.inf, np.inf, np.inf], dtype=np.float32),
             dtype=np.float32
@@ -84,3 +84,5 @@ class LanderEnv(gym.Env):
 
 
 # You don't need to specify where action comes from. Whoever calls step() supplies that argument. During training, that's Stable-Baselines3's PPO algorithm.
+
+# Gymnasium defines the standard rules for how PPO interacts with an environment.

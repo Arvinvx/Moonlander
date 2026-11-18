@@ -19,7 +19,7 @@ def get_reward(landed, crashed, timed_out, fuel_before, fuel_after, dt, velocity
     if landed:
         reward += 100.0 # landing gives 100 points
 
-    if progress > 0: #Moving closer to the Moon earns points
+    if progress > 0: # Moving closer to the Moon earns points till we havent hit the moon.
         reward += progress * 0.02 # 
 
     # The closer u get to the moon the less speed
