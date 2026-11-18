@@ -17,9 +17,11 @@ print("ENVIRONMENT CHECK PASSED")
 # Create a NEW PPO model from scratch
 model = PPO("MlpPolicy", env, verbose=1, device="cpu")
 
+PPO.load("model/ppo_lander_v1_reward_v5", env=env, device="cpu")
+
 model.learn(total_timesteps=200_000)
 
-model.save("model/ppo_lander_v1_reward_v5")
+model.save("lander-v2")
 
 print("TRAINING COMPLETE")
 env.close()
