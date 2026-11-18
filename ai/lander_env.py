@@ -22,7 +22,13 @@ class LanderEnv(gym.Env):
 
     def reset(self, seed=None, options=None):
         super().reset(seed=seed) 
-        self.rocket = lander_cpp.Lander(1000, -10, 1000, 3000, 0.2, 500, 2)        
+
+        altitude = self.np_random.uniform(1000, 1400)
+        velocity = self.np_random.uniform(-50, -35)
+        fuel = self.np_random.uniform(450, 550)
+        max_thrust = self.np_random.uniform(2950, 3100)
+
+        self.rocket = lander_cpp.Lander(altitude, velocity, fuel, max_thrust, 0.2, 500, 2)       
         self.counter = 0
         self.getaltitude = self.rocket.get_altitude()
         self.getVelocity = self.rocket.get_velocity()
@@ -33,13 +39,15 @@ class LanderEnv(gym.Env):
             self.getFuel/500.0
         ], dtype=np.float32)
         
+        
 
         return observation, {}
 
     def step(self, action):
         self.counter += 1
         self.throttle = action.item()  # here we ask ai to give us a value between 0 and 1 (thrust).
-        self.rocket.set_throttle(self.throttle)
+        actual_throttle = np.clip(self.throttle + self.np_random.normal(0,0.04), 0.0, 1.0)  # make sure the value is between 0 and 1.
+        self.rocket.set_throttle(actual_throttle)
         self.fuel_before = self.rocket.get_fuel()
         self.previous_altitude = self.rocket.get_altitude()
         self.rocket.move(1.0)
@@ -64,9 +72,9 @@ class LanderEnv(gym.Env):
     )
 
         observation = np.array([ # normalize the values to make it easier for the AI to learn.
-            self.new_altitude / 1000.0,
-            self.new_velocity / 100.0,
-            self.new_fuel / 500.0
+            (self.new_altitude + self.np_random.normal(0, 5)) / 1000.0,
+            (self.new_velocity + self.np_random.normal(0, 2.5)) / 100.0,
+            (self.new_fuel + self.np_random.normal(0, 3)) / 500.0
         ], dtype=np.float32)
 
         terminated = self.landed or self.crashed
